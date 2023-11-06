@@ -35,9 +35,9 @@ You'll need your Census API Key:
 
 ```{r echo=FALSE}
 
-myapikey <- "YOUR API KEY"
+myapikey <- "2db85c7c61fd437923a2330bb7408be7ff64e8fd"
 
-census_api_key(myapikey, overwrite=TRUE)
+census_api_key(myapikey, overwrite=TRUE, install=TRUE)
 ```
 
 ## Load and view ACS variables
@@ -48,29 +48,35 @@ You'll also need to load the list of American Community Survey variables from th
 
 ```{r}
 
+censusvariables <- load_variables(2021, "acs5", cache = TRUE)
 
 ```
 
 ## Answer questions
 
-**Q1** What is the Maryland jurisdiction with the lowest median age, according to the ACS 2021 5-year estimates? You will need to find the variable for median age first. 
+**Q1** What is the Maryland jurisdiction with the lowest median age, according to the ACS 2021 5-year estimates? You will need to find the variable for median age first.
+#Baltimore City, with 35.7 as the median age. 
 
 ```{r}
+medagetotal <- "B01002_001"
 
-
-
-
+mdcensus <- get_acs(geography = "county", 
+        variables = medagetotal,
+        state = "MD", 
+        output = "wide")
 
 
 ```
 
 
 **Q2** Which Maryland counties have a median age of at least 50? You can use the dataframe you just made to answer this, but you must write code to display only those counties with a median age of at least 50. 
+#Talbot and Worcestor Counties.
 
 ```{r}
 
-
-
+mdcensus_medage50 <- mdcensus %>%
+  filter(estimate > 50) %>%
+  view()
 
 ```
 
